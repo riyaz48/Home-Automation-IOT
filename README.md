@@ -1,35 +1,28 @@
-# 🏠 Home Automation System using NodeMCU and Blynk (IoT)
+#define BLYNK_TEMPLATE_ID "YourTemplateID"
+#define BLYNK_TEMPLATE_NAME "HomeAutomation"
+#define BLYNK_AUTH_TOKEN "YourAuthToken"
 
-## 🔧 Description
-This is Task 2 of the CodTech Internship. It demonstrates a simple home automation prototype using NodeMCU and Blynk app to control light and fan.
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
 
-## 🧰 Components
-- NodeMCU ESP8266
-- 2 LEDs or Relays
-- Breadboard, jumper wires
-- Blynk app (mobile)
-- Arduino IDE
+char auth[] = "YourAuthToken";
+char ssid[] = "YourWiFiName";
+char pass[] = "YourWiFiPassword";
 
-## ⚡ Circuit Connections
+void setup() {
+  Blynk.begin(auth, ssid, pass);
+  pinMode(D1, OUTPUT);
+  pinMode(D2, OUTPUT);
+}
 
-| Device | NodeMCU Pin |
-|--------|-------------|
-| Light  | D1 (GPIO5)  |
-| Fan    | D2 (GPIO4)  |
+BLYNK_WRITE(V1) {
+  digitalWrite(D1, param.asInt()); // Light
+}
 
-## 📱 Blynk Setup
-1. Create a project on Blynk app
-2. Device: NodeMCU
-3. Connection: Wi-Fi
-4. Add 2 buttons:
-   - Light → V1
-   - Fan → V2
-5. Set buttons to switch mode
-6. Use the Auth Token from email in Arduino code
+BLYNK_WRITE(V2) {
+  digitalWrite(D2, param.asInt()); // Fan
+}
 
-## 📤 Deliverable
-A working home automation system that controls devices using the Blynk mobile app.
-
-## 🎯 Result
-- Light ON/OFF from mobile
-- Fan ON/OFF from mobile
+void loop() {
+  Blynk.run();
+}
